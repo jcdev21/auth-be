@@ -27,7 +27,7 @@ const login = async (req, res) => {
 
 
         // const expCookie = new Date(Date.now() + 60 * 60 * 24 * 1000 * 1); // 1 hari
-        const expCookie = new Date(Date.now() + 60 * 2 * 1000); // setengah jam | menyesuaikan dengan expired refresh token
+        const expCookie = new Date(Date.now() + 60 * 30 * 1000); // setengah jam | menyesuaikan dengan expired refresh token
 
         res.cookie('refresh-token', refreshToken, {
             expires: expCookie,
