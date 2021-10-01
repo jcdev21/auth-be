@@ -10,9 +10,10 @@ const app = express();
 // use plugin
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 app.use(helmet());
 app.use(compression());
+app.use(cors({ origin: true, credentials: true }));
 /** SETTING CORS
 app.use(
     cors({

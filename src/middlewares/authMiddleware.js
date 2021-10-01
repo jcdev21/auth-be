@@ -18,7 +18,6 @@ const auth = async (req, res, next) => {
 
     try {
         const credential = verifyToken(token);
-        console.log(credential, 'verify');
 
         if (credential) {
             req.user = credential;
@@ -38,7 +37,6 @@ const auth = async (req, res, next) => {
         }
 
         const decoded = decodeToken(token);
-        console.log(decoded, 'decoded');
         if (decoded && decoded.exp < Date.now() / 1000) {
             /**
              * Jika menggunakan ini,
@@ -62,13 +60,12 @@ const auth = async (req, res, next) => {
 
 const prosesRefreshToken = async (req, res) => {
     const { cookies } = req;
-    console.log(cookies);
+
     if ('refresh-token' in cookies) {
         try {
             const refreshTokenCredential = verifyRefreshToken(
                 cookies['refresh-token']
             );
-            console.log(refreshTokenCredential, 'RF');
 
             if (refreshTokenCredential) {
                 // disini bisa dilakukan pengecekan keamanan lanjutan
@@ -77,17 +74,17 @@ const prosesRefreshToken = async (req, res) => {
 
                 const dataUser = await getDataUserId(refreshTokenCredential.id);
                 const accessToken = generateToken(dataUser.id, '1m');
-                console.log(accessToken);
-                return res.json({
+
+                return res.status(401).json({
                     success: true,
                     data: {
+                        message: 'refresh-token',
                         accessToken,
                         dataUser,
                     },
                 });
             }
         } catch (error) {
-            console.log(error.message);
             return res.status(403).json({
                 success: false,
                 msg: 'invalid refresh token',
